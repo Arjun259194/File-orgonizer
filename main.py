@@ -5,13 +5,13 @@ import easygui
 
 def create_directories(dir):
     directories_needed = {
-        os.path.join(dir, "images"),
-        os.path.join(dir, "docs"),
-        os.path.join(dir, "videos"),
-        os.path.join(dir, "executables"),
-        os.path.join(dir, "zips"),
-        os.path.join(dir, "audios"),
-        os.path.join(dir, "others"),
+        os.path.join(dir, "Images"),
+        os.path.join(dir, "Docs"),
+        os.path.join(dir, "Videos"),
+        os.path.join(dir, "Executables"),
+        os.path.join(dir, "Zips"),
+        os.path.join(dir, "Audios"),
+        os.path.join(dir, "Others"),
     }
 
     for path in directories_needed:
@@ -20,17 +20,28 @@ def create_directories(dir):
 
 
 def move_file(file_extension, file_path, directory):
-    if(file_extension == "png" or file_extension == "jpg" or file_extension == "jpeg" or file_extension == "webp"):
+
+    image_file_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff']
+    executable_file_extensions = ['.exe', '.msi', '.bat', '.cmd', '.vbs']
+    zip_file_extensions = ['.zip', '.7z', '.tar', '.gz']
+    text_file_extensions = ['.txt', '.rtf', '.doc',
+                            '.docx', '.odt', '.pdf', '.ppt', '.pptx']
+    video_file_extensions = ['.avi', '.mp4', '.mov',
+                             '.wmv', '.mkv', '.flv', '.mpg', '.mpeg']
+    audio_file_extensions = ['.mp3', '.wav',
+                             '.wma', '.aac', '.flac', '.m4a', '.amr']
+
+    if(file_extension in image_file_extensions):
         shutil.move(file_path, os.path.join(directory, "images"))
-    elif(file_extension == "exe"):
+    elif(file_extension in executable_file_extensions):
         shutil.move(file_path, os.path.join(directory, "executables"))
-    elif(file_extension == "mp4"):
+    elif(file_extension in video_file_extensions):
         shutil.move(file_path, os.path.join(directory, "videos"))
-    elif(file_extension == "txt" or file_extension == "doc" or file_extension == "docx" or file_extension == "pdf"):
+    elif(file_extension in text_file_extensions):
         shutil.move(file_path, os.path.join(directory, "docs"))
-    elif(file_extension == "zip"):
+    elif(file_extension in zip_file_extensions):
         shutil.move(file_path, os.path.join(directory, "zips"))
-    elif(file_extension == "mp3"):
+    elif(file_extension in audio_file_extensions):
         shutil.move(file_path, os.path.join(directory, "audios"))
     else:
         shutil.move(file_path, os.path.join(directory, "others"))
@@ -38,22 +49,16 @@ def move_file(file_extension, file_path, directory):
 
 def main():
     directory = easygui.diropenbox()
-
     if not directory:
         print("directory not selected")
-
     if not os.path.isdir(directory):
         return print("entered path is not a valid path in your system")
-
     create_directories(directory)
-
     for filename in os.listdir(directory):
         file_path = os.path.join(directory, filename)
-        file_extension = filename.split('.')[-1]
-
+        file_extension = os.path.splitext(filename)[1]
         if not os.path.isfile(file_path):
             continue
-
         move_file(file_extension, file_path, directory)
 
 
