@@ -5,13 +5,13 @@ import easygui
 
 def create_directories(dir):
     directories_needed = {
-        os.path.join(dir, "images"),
-        os.path.join(dir, "docs"),
-        os.path.join(dir, "videos"),
-        os.path.join(dir, "executables"),
-        os.path.join(dir, "zips"),
-        os.path.join(dir, "audios"),
-        os.path.join(dir, "others"),
+        os.path.join(dir, "Images"),
+        os.path.join(dir, "Docs"),
+        os.path.join(dir, "Videos"),
+        os.path.join(dir, "Executables"),
+        os.path.join(dir, "Zips"),
+        os.path.join(dir, "Audios"),
+        os.path.join(dir, "Others"),
     }
 
     for path in directories_needed:
