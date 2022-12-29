@@ -2,49 +2,37 @@ import os
 import shutil
 import easygui
 
+from modules import *
+
 
 def create_directories(dir):
-    directories_needed = {
-        os.path.join(dir, "Images"),
-        os.path.join(dir, "Docs"),
-        os.path.join(dir, "Videos"),
-        os.path.join(dir, "Executables"),
-        os.path.join(dir, "Zips"),
-        os.path.join(dir, "Audios"),
-        os.path.join(dir, "Others"),
-    }
+    directories_needed = get_directory_list(dir)
 
     for path in directories_needed:
         if not os.path.isdir(path):
             os.mkdir(path)
 
 
-def move_file(file_extension, file_path, directory):
-
-    image_file_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff']
-    executable_file_extensions = ['.exe', '.msi', '.bat', '.cmd', '.vbs']
-    zip_file_extensions = ['.zip', '.7z', '.tar', '.gz']
-    text_file_extensions = ['.txt', '.rtf', '.doc',
-                            '.docx', '.odt', '.pdf', '.ppt', '.pptx']
-    video_file_extensions = ['.avi', '.mp4', '.mov',
-                             '.wmv', '.mkv', '.flv', '.mpg', '.mpeg']
-    audio_file_extensions = ['.mp3', '.wav',
-                             '.wma', '.aac', '.flac', '.m4a', '.amr']
-
-    if(file_extension in image_file_extensions):
-        shutil.move(file_path, os.path.join(directory, "images"))
-    elif(file_extension in executable_file_extensions):
-        shutil.move(file_path, os.path.join(directory, "executables"))
-    elif(file_extension in video_file_extensions):
-        shutil.move(file_path, os.path.join(directory, "videos"))
-    elif(file_extension in text_file_extensions):
-        shutil.move(file_path, os.path.join(directory, "docs"))
-    elif(file_extension in zip_file_extensions):
-        shutil.move(file_path, os.path.join(directory, "zips"))
-    elif(file_extension in audio_file_extensions):
-        shutil.move(file_path, os.path.join(directory, "audios"))
+def get_file_directory(file_extension):
+    if(file_extension in image_file_extensions()):
+        return "Images"
+    elif(file_extension in executable_file_extensions()):
+        return "Executables"
+    elif(file_extension in video_file_extensions()):
+        return "Videos"
+    elif(file_extension in text_file_extensions()):
+        return "Docs"
+    elif(file_extension in zip_file_extensions()):
+        return "Zips"
+    elif(file_extension in audio_file_extensions()):
+        return "Audios"
     else:
-        shutil.move(file_path, os.path.join(directory, "others"))
+        return "Others"
+
+
+def move_file(file_extension, file_path, directory):
+    shutil.move(file_path, os.path.join(
+        directory, get_file_directory(file_extension)))
 
 
 def main():
