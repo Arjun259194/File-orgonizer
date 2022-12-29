@@ -1,13 +1,11 @@
 import os
 import shutil
 import easygui
-
 from modules import *
 
 
 def create_directories(dir):
     directories_needed = get_directory_list(dir)
-
     for path in directories_needed:
         if not os.path.isdir(path):
             os.mkdir(path)
@@ -30,9 +28,18 @@ def get_file_directory(file_extension):
         return "Others"
 
 
-def move_file(file_extension, file_path, directory):
+def move_file(filename, directory):
+    file_path = os.path.join(directory, filename)
+    file_extension = os.path.splitext(filename)[1]
+    if not os.path.isfile(file_path):
+        return
     shutil.move(file_path, os.path.join(
         directory, get_file_directory(file_extension)))
+
+
+def move_files(directory):
+    for filename in os.listdir(directory):
+        move_file(filename, directory)
 
 
 def main():
@@ -42,12 +49,7 @@ def main():
     if not os.path.isdir(directory):
         return print("entered path is not a valid path in your system")
     create_directories(directory)
-    for filename in os.listdir(directory):
-        file_path = os.path.join(directory, filename)
-        file_extension = os.path.splitext(filename)[1]
-        if not os.path.isfile(file_path):
-            continue
-        move_file(file_extension, file_path, directory)
+    move_files(directory)
 
 
 if __name__ == "__main__":
